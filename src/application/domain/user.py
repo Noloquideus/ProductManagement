@@ -1,8 +1,8 @@
-from typing import List
+from typing import List, Union
 import phonenumbers
 from pydantic import BaseModel, StrictStr, EmailStr, Field, field_validator
-
-from src.exceptions import InvalidPhoneNumberException, InvalidPhoneNumberFormatException
+from pydantic_core import ValidationError
+from src.exceptions import InvalidPhoneNumberException, InvalidPhoneNumberFormatException, InvalidCredentialsException
 
 
 class UserRegistration(BaseModel):
@@ -61,3 +61,39 @@ class UserResponse(BaseModel):
     user: UserDto = None
     access_token: str = None
     refresh_token: str = None
+
+
+class UserLogin(BaseModel):
+    login: Union[EmailStr, StrictStr] = Field(
+        title="Login",
+        description="Phone number or email of the user",
+        examples=["+79111111111", "example@example.com"]
+    )
+
+    password: StrictStr = Field(
+        title="Password",
+        description="Password of the user",
+        example="password",
+        min_length=8,
+        max_length=128
+    )
+
+    @field_validator('login', mode='before')
+    def validate_login(cls, value):
+        if isinstance(value, EmailStr):
+            return value
+        elif isinstance(value, str):
+            try:
+                parsed_number = phonenumbers.parse(value)
+                if phonenumbers.is_valid_number(parsed_number):
+                    return value
+                else:
+                    raise InvalidPhoneNumberException
+            except phonenumbers.phonenumberutil.NumberParseException:
+                pass
+            try:
+                return EmailStr._validate(value)
+            except ValidationError:
+                raise InvalidPhoneNumberFormatException
+        else:
+            raise InvalidCredentialsException
