@@ -1,3 +1,4 @@
+from typing import List
 import phonenumbers
 from pydantic import BaseModel, StrictStr, EmailStr, Field, field_validator
 from src.exceptions import InvalidPhoneNumberException, InvalidPhoneNumberFormatException
@@ -40,3 +41,16 @@ class UserRegistration(BaseModel):
         except Exception as e:
             raise InvalidPhoneNumberFormatException from e
         return phone_number
+
+
+class UserDto(BaseModel):
+    id: str = None
+    phone_number: str = None
+    email: str = None
+    first_name: str = None
+    last_name: str = None
+    password_hash: str = None
+    access_level: int = None
+    is_email_verified: bool = None
+    refresh_tokens: List[str] = None
+    date_created: str = None
