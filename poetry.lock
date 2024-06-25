@@ -592,6 +592,17 @@ files = [
 ]
 
 [[package]]
+name = "phonenumbers"
+version = "8.13.39"
+description = "Python version of Google's common library for parsing, formatting, storing and validating international phone numbers."
+optional = false
+python-versions = "*"
+files = [
+    {file = "phonenumbers-8.13.39-py2.py3-none-any.whl", hash = "sha256:3ad2d086fa71e7eef409001b9195ac54bebb0c6e3e752209b558ca192c9229a0"},
+    {file = "phonenumbers-8.13.39.tar.gz", hash = "sha256:db7ca4970d206b2056231105300753b1a5b229f43416f8c2b3010e63fbb68d77"},
+]
+
+[[package]]
 name = "pydantic"
 version = "2.7.4"
 description = "Data validation using Python type hints"
@@ -1368,4 +1379,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "7973a1661983616e1990668d96bef87711d4e867d8968ab0d56f89d9315bdb17"
+content-hash = "e4137ead008760a765f98a1602bd10848aa2e405296a938c93e3f9fe8e457a05"
