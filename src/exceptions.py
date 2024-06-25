@@ -17,3 +17,8 @@ class InvalidPhoneNumberException(DefaultException):
 class InvalidPhoneNumberFormatException(DefaultException):
     def __init__(self):
         super().__init__(status_code=status.HTTP_400_BAD_REQUEST, detail='Invalid phone number format')
+
+
+class InvalidCredentialsException(DefaultException):
+    def __init__(self):
+        super().__init__(status_code=status.HTTP_401_UNAUTHORIZED, detail='Invalid credentials')
