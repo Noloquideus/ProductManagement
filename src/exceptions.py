@@ -7,3 +7,13 @@ class DefaultException(HTTPException):
 
     def __str__(self):
         return f'{self.status_code}: {self.detail}'
+
+
+class InvalidPhoneNumberException(DefaultException):
+    def __init__(self):
+        super().__init__(status_code=status.HTTP_400_BAD_REQUEST, detail='Invalid phone number')
+
+
+class InvalidPhoneNumberFormatException(DefaultException):
+    def __init__(self):
+        super().__init__(status_code=status.HTTP_400_BAD_REQUEST, detail='Invalid phone number format')
