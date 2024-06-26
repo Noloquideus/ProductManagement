@@ -17,8 +17,6 @@ class Settings(BaseSettings):
     ALGORITHM: str
     ACCESS_SECRET_KEY: str
     ACCESS_TTL_MINUTES: int
-    REFRESH_SECRET_KEY: str
-    REFRESH_TTL_MINUTES: int
 
     SUPERADMIN_EMAIL: str
     SUPERADMIN_PHONE: str
