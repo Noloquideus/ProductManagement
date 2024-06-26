@@ -14,5 +14,4 @@ class User(Base):
     last_name = Column(String, nullable=False)
     password_hash = Column(String, nullable=False)
     access_level = Column(INTEGER, nullable=False, default=1)
-    refresh_tokens = Column(ARRAY(String), nullable=True)
     date_created = Column(DateTime, nullable=False, default=func.now())

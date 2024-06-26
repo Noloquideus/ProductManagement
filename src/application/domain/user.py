@@ -52,8 +52,6 @@ class UserDto(BaseModel):
     last_name: str = None
     password_hash: str = None
     access_level: int = None
-    is_email_verified: bool = None
-    refresh_tokens: List[str] = None
     date_created: str = None
 
 
