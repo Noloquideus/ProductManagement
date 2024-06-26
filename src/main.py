@@ -1,7 +1,7 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from src.api.auth.auth_router import auth_router
-from src.infrastructure.database.cache.redis import init_redis
+from src.infrastructure.database.init.redis import init_redis
 
 
 @asynccontextmanager
