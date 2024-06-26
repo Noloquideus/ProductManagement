@@ -1,5 +1,6 @@
 from uuid import UUID
 
+from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 
 from src.application.domain.user import UserDto
@@ -38,16 +39,14 @@ class UserRepository:
 
     @staticmethod
     async def get_user_by_email(email: str) -> User:
-        pass
+        async with async_session_maker() as session:
+            query = select(User).filter_by(email=email)
+            result = await session.execute(query)
+            return result.scalar_one_or_none()
 
     @staticmethod
     async def get_user_by_phone_number(phone_number: str) -> User:
-        pass
-
-    @staticmethod
-    async def delete_all_refresh_tokens(user_id: UUID) -> None:
-        pass
-
-    @staticmethod
-    async def delete_refresh_token(user_id: UUID, refresh_token: str) -> None:
-        pass
+        async with async_session_maker() as session:
+            query = select(User).filter_by(phone_number=phone_number)
+            result = await session.execute(query)
+            return result.scalar_one_or_none()
