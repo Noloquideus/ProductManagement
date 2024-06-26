@@ -13,6 +13,7 @@ async def lifespan(_):
 app = FastAPI(title='Auth Service', description='Auth Service API', version='1.0.0', redoc_url=None, lifespan=lifespan)
 app.include_router(auth_router)
 
+
 @app.get("/")
 async def root():
     return {"message": "Auth service"}
