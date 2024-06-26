@@ -58,7 +58,6 @@ class UserDto(BaseModel):
 class UserResponse(BaseModel):
     user: UserDto = None
     access_token: str = None
-    refresh_token: str = None
 
 
 class UserLogin(BaseModel):
