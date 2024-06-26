@@ -1,7 +1,10 @@
 from datetime import datetime, timedelta, timezone
+from typing import Dict
+
 import jwt
 from src.application.domain.user import UserDto
 from src.config import settings
+from src.exceptions import TokenExpiredException, InvalidTokenException
 
 
 class TokenService:
@@ -19,3 +22,16 @@ class TokenService:
         }
         token = jwt.encode(payload, settings.ACCESS_SECRET_KEY, algorithm=settings.ALGORITHM)
         return token
+
+    @staticmethod
+    async def decode_access_token(token: str) -> Dict[str, str]:
+        try:
+            payload = jwt.decode(token, settings.ACCESS_SECRET_KEY, algorithms=[settings.ALGORITHM])
+            expire_time = datetime.fromtimestamp(payload["exp"]).replace(tzinfo=timezone.utc)
+            if expire_time < datetime.now(timezone.utc):
+                raise TokenExpiredException
+            return payload
+        except jwt.ExpiredSignatureError:
+            raise TokenExpiredException
+        except jwt.DecodeError:
+            raise InvalidTokenException
