@@ -56,7 +56,7 @@ class UserDto(BaseModel):
 
 
 class UserResponse(BaseModel):
-    user: UserDto = None
+    user_data: UserDto = None
     access_token: str = None
 
 
