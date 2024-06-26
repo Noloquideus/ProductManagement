@@ -1,7 +1,6 @@
 from fastapi import APIRouter, status, Response
-from src.application.domain.user import UserRegistration, UserDto, UserResponse
+from src.application.domain.user import UserRegistration, UserLogin
 from src.application.services.user_service import UserService
-from src.infrastructure.utils.token_service import TokenService
 
 auth_router = APIRouter(
     prefix="/auth",
@@ -21,17 +20,22 @@ auth_router = APIRouter(
         status.HTTP_409_CONFLICT: {"description": "User already exists"}})
 async def register(response: Response, user_data: UserRegistration):
     user = await UserService.create_user(user_data)
+    response.set_cookie(key="access_token", value=user.access_token, httponly=True, samesite="strict", secure=True)
+    return user.user_data
 
-    user_dto = UserDto(
-        id=str(user.id),
-        email=user.email,
-        phone_number=user.phone_number,
-        first_name=user.first_name,
-        last_name=user.last_name,
-        access_level=user.access_level)
 
-    access_token = await TokenService.create_access_token(user_dto)
-
-    response.status_code = status.HTTP_201_CREATED
-    response.set_cookie(key="access_token", value=access_token, httponly=True, samesite="strict", secure=True)
-    return user_dto
+@auth_router.post(
+    path='/login',
+    status_code=200,
+    description='Login a user by providing an email and password. Returns the logged in user\'s information excluding the password.',
+    summary='Login a user',
+    response_description='User and access and refresh tokens',
+    responses={
+        200: {"description": "User successfully logged in"},
+        400: {"description": "Invalid password"},
+        401: {"description": "Invalid credentials"},
+        500: {"description": "Internal server error"}})
+async def login(response: Response, user_data: UserLogin):
+    user = await UserService.login(user_data)
+    response.set_cookie(key="access_token", value=user.access_token, httponly=True, samesite="strict", secure=True)
+    return user.user_data
