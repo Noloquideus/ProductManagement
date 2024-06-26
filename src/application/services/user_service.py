@@ -1,4 +1,4 @@
-from src.application.domain.user import UserDto, UserRegistration
+from src.application.domain.user import UserDto, UserRegistration, UserLogin
 from src.infrastructure.database.models import User
 from src.infrastructure.database.repositories.user_repository import UserRepository
 from src.infrastructure.utils.hash_service import HashService
@@ -18,17 +18,9 @@ class UserService:
 
         user = await UserRepository.create_user(user_dto)
 
-        return user
+        return (user)
 
     @staticmethod
-    async def get_user_by_id(user_id: int) -> User:
-        pass
-
-    @staticmethod
-    async def get_user_by_email(email: str) -> User:
-        pass
-
-    @staticmethod
-    async def get_user_by_phone(phone: str) -> User:
+    async def login(user_data: UserLogin) -> User:
         pass
 
