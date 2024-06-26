@@ -1,4 +1,6 @@
 from typing import List, Union
+
+import email_validator
 import phonenumbers
 from pydantic import BaseModel, StrictStr, EmailStr, Field, field_validator
 from pydantic_core import ValidationError
@@ -14,7 +16,7 @@ class UserRegistration(BaseModel):
     email: EmailStr = Field(
         title="Email",
         description="Email of the user",
-        example="example@example.com")
+        example="example@gmail.com")
 
     first_name: StrictStr = Field(
         title="First name",
@@ -64,8 +66,7 @@ class UserLogin(BaseModel):
     login: Union[EmailStr, StrictStr] = Field(
         title="Login",
         description="Phone number or email of the user",
-        examples=["+79111111111", "example@example.com"]
-    )
+        examples=["+79111111111", "example@gmail.com"])
 
     password: StrictStr = Field(
         title="Password",
@@ -77,7 +78,7 @@ class UserLogin(BaseModel):
 
     @field_validator('login', mode='before')
     def validate_login(cls, value):
-        if isinstance(value, EmailStr):
+        if email_validator.validate_email(value):
             return value
         elif isinstance(value, str):
             try:
