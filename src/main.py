@@ -1,10 +1,12 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from src.api.auth.auth_router import auth_router
+from src.infrastructure.database.cache.redis import init_redis
 
 
 @asynccontextmanager
 async def lifespan(_):
+    await init_redis()
     print("startup")
     yield
     print("shutdown")
