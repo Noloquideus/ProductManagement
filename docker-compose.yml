@@ -1,0 +1,23 @@
+services:
+  database_container:
+    container_name: database_container
+    image: postgres:16.3-alpine3.20
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+      - POSTGRES_DB=${DB_NAME}
+    ports:
+      - "5432:5432"
+
+  marketplace_container:
+    container_name: marketplace_container
+    build: .
+    env_file:
+      - .env
+    depends_on:
+      - database_container
+    command: sh -c "sleep 10 && alembic upgrade head && uvicorn src.main:app --host 0.0.0.0 --port 7777"
+    ports:
+      - "7777:7777"
