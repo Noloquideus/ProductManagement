@@ -1,6 +1,6 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
-from src.api.auth_router import auth_router
+from src.api.auth.auth_router import auth_router
 
 
 @asynccontextmanager
