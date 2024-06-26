@@ -22,3 +22,9 @@ class InvalidPhoneNumberFormatException(DefaultException):
 class InvalidCredentialsException(DefaultException):
     def __init__(self):
         super().__init__(status_code=status.HTTP_401_UNAUTHORIZED, detail='Invalid credentials')
+
+
+class UserAlreadyExistsException(DefaultException):
+    def __init__(self):
+        super().__init__(status_code=status.HTTP_409_CONFLICT, detail='User already exists')
+
