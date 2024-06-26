@@ -20,8 +20,6 @@ class Settings(BaseSettings):
 
     SUPERADMIN_EMAIL: str
     SUPERADMIN_PHONE: str
-    SUPERADMIN_FIRSTNAME: str
-    SUPERADMIN_LASTNAME: str
     SUPERADMIN_PASSWORD: str
     SUPERADMIN_ACCESS_LEVEL: int
 
