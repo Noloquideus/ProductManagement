@@ -2,11 +2,13 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from src.api.auth.auth_router import auth_router
 from src.infrastructure.database.init.redis import init_redis
+from src.infrastructure.database.init.superadmin import create_superadmin
 
 
 @asynccontextmanager
 async def lifespan(_):
     await init_redis()
+    await create_superadmin()
     print("startup")
     yield
     print("shutdown")
