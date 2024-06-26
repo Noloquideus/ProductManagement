@@ -14,7 +14,6 @@ class TokenService:
             "email": user.email,
             "phone": user.phone_number,
             "access_level": user.access_level,
-            "is_email_verified": user.is_email_verified,
             "iat": datetime.now(timezone.utc),
             "exp": datetime.now(timezone.utc) + expire_delta
         }
