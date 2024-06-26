@@ -1,6 +1,5 @@
 from datetime import datetime, timedelta, timezone
 from typing import Dict
-
 import jwt
 from src.application.domain.user import UserDto
 from src.config import settings
