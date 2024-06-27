@@ -31,7 +31,7 @@ class Product(Base):
     __tablename__ = "products"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, unique=True, nullable=False, index=True)
-    name = Column(String, nullable=False, index=True)
+    name = Column(String, unique=True, nullable=False, index=True)
     description = Column(String, nullable=True)
     price = Column(Float, nullable=False)
     quantity = Column(INTEGER, nullable=False)
