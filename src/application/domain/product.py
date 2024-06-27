@@ -1,4 +1,5 @@
 from typing import Optional
+from uuid import UUID
 from pydantic import BaseModel, Field
 
 
@@ -25,7 +26,6 @@ class ProductCreate(BaseModel):
         description="Quantity of the product",
         ge=0,
         examples=[10, 20])
-    category_id: Optional[str] = Field(
-        title="Product category",
-        description="Category of the product",
-        default=None)
+    category_id: Optional[UUID] = Field(
+        title="Product category id",
+        description="Category of the product")
