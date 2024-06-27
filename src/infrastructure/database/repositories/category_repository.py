@@ -2,7 +2,7 @@ from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
 
 from src.application.domain.category import CategoryCreate
-from src.exceptions import CategoryAlreadyExistsException
+from src.exceptions import CategoryAlreadyExistsException, CategoryNotFoundException
 from src.infrastructure.database.database import async_session_maker
 from src.infrastructure.database.models import Category
 
@@ -40,9 +40,10 @@ class CategoryRepository:
         async with async_session_maker() as session:
             result = await session.execute(select(Category).filter_by(id=category_id))
             category = result.scalars().first()
-            if category:
-                await session.delete(category)
-                await session.commit()
+            if not category:
+                raise CategoryNotFoundException
+            await session.delete(category)
+            await session.commit()
             return category
 
     @staticmethod
