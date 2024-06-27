@@ -1,6 +1,5 @@
 from typing import Optional
 from uuid import UUID
-
 from src.application.domain.category import CategoryCreate
 from src.infrastructure.database.models import Category
 from src.infrastructure.database.repositories.category_repository import CategoryRepository
