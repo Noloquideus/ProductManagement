@@ -1,8 +1,5 @@
-from uuid import UUID
-
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
-
 from src.application.domain.user import UserDto
 from src.exceptions import UserAlreadyExistsException
 from src.infrastructure.database.database import async_session_maker
@@ -28,14 +25,6 @@ class UserRepository:
             except IntegrityError:
                 await session.rollback()
                 raise UserAlreadyExistsException
-
-    @staticmethod
-    async def add_refresh_token(user_id: UUID, refresh_token: str) -> None:
-        pass
-
-    @staticmethod
-    async def get_user_by_id(user_id: UUID) -> User:
-        pass
 
     @staticmethod
     async def get_user_by_email(email: str) -> User:
