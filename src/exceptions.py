@@ -62,3 +62,8 @@ class CategoryNotFoundException(DefaultException):
 class ProductAlreadyExistsException(DefaultException):
     def __init__(self):
         super().__init__(status_code=status.HTTP_409_CONFLICT, detail='Product already exists')
+
+
+class ProductNotFoundException(DefaultException):
+    def __init__(self):
+        super().__init__(status_code=status.HTTP_404_NOT_FOUND, detail='Product not found')
