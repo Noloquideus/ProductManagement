@@ -47,3 +47,13 @@ class InvalidTokenException(DefaultException):
 class InsufficientAccessLevelException(DefaultException):
     def __init__(self):
         super().__init__(status_code=status.HTTP_403_FORBIDDEN, detail="Insufficient access level")
+
+
+class CategoryAlreadyExistsException(DefaultException):
+    def __init__(self):
+        super().__init__(status_code=status.HTTP_409_CONFLICT, detail='Category already exists')
+
+
+class CategoryNotFoundException(DefaultException):
+    def __init__(self):
+        super().__init__(status_code=status.HTTP_404_NOT_FOUND, detail='Category not found')
