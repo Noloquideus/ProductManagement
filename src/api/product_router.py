@@ -1,6 +1,8 @@
 from typing import Optional, List
 from uuid import UUID
 from fastapi import APIRouter, status, Query
+from fastapi_cache.decorator import cache
+
 from src.application.domain.product import ProductCreate, ProductUpdate, ProductResponse
 from src.application.services.product_service import ProductService
 
@@ -37,6 +39,7 @@ async def get_product(product_id: UUID):
     description='Get products by filters',
     summary='Get products by filters',
     response_description='The requested products')
+@cache(expire=180)
 async def get_products(
     name: Optional[str] = Query(None, description="Filter by product name"),
     min_price: Optional[float] = Query(None, description="Filter by minimum price"),

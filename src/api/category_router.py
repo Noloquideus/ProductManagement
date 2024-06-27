@@ -1,5 +1,6 @@
 from uuid import UUID
 from fastapi import APIRouter, status
+from fastapi_cache.decorator import cache
 from src.application.domain.category import CategoryCreate
 from src.application.services.category_service import CategoryService
 
@@ -24,6 +25,7 @@ async def create_category(category_data: CategoryCreate):
     status_code=status.HTTP_200_OK,
     description='Get all categories',
     summary='Get all categories')
+@cache(expire=300)
 async def get_all_categories():
     return await CategoryService.get_all_categories()
 
