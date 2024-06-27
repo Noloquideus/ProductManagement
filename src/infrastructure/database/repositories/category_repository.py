@@ -1,5 +1,4 @@
 from uuid import UUID
-
 from sqlalchemy import select, update
 from sqlalchemy.exc import SQLAlchemyError
 from src.application.domain.category import CategoryCreate
