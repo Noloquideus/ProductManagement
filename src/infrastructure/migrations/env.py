@@ -12,7 +12,7 @@ from src.config import settings
 sys.path.insert(0, dirname(dirname(dirname(abspath(__file__)))))
 
 from src.infrastructure.database.database import Base
-from src.infrastructure.database.models import User
+from src.infrastructure.database.models import User, Category, Product
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
