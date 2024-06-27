@@ -32,6 +32,9 @@ class ProductCreate(BaseModel):
 
 
 class ProductUpdate(BaseModel):
+    product_id: UUID = Field(
+        title="Product id",
+        description="Id of the product")
     name: Optional[str] = Field(
         title="Product name",
         description="Name of the product",
@@ -52,4 +55,4 @@ class ProductUpdate(BaseModel):
         ge=0)
     category_id: Optional[UUID] = Field(
         title="Product category id",
-        description="Category of the product")
+        description="Change category")
