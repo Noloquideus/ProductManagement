@@ -1,8 +1,8 @@
+from typing import Optional, List
 from uuid import UUID
-
-from sqlalchemy import select
+from sqlalchemy import select, and_
 from sqlalchemy.exc import SQLAlchemyError
-from src.application.domain.product import ProductCreate, ProductUpdate
+from src.application.domain.product import ProductCreate, ProductUpdate, ProductResponse
 from src.exceptions import ProductAlreadyExistsException, ProductNotFoundException, CategoryNotFoundException
 from src.infrastructure.database.database import async_session_maker
 from src.infrastructure.database.models import Product, Category
@@ -77,3 +77,45 @@ class ProductRepository:
                 raise e
 
             return product
+
+    @staticmethod
+    async def get_product_by_id(product_id: UUID) -> Optional[ProductResponse]:
+        async with async_session_maker() as session:
+            result = await session.execute(select(Product).filter_by(id=product_id))
+            product = result.scalars().first()
+            if product:
+                return ProductResponse.from_orm(product)
+            return None
+
+    @staticmethod
+    async def get_products(
+        name: Optional[str] = None,
+        min_price: Optional[float] = None,
+        max_price: Optional[float] = None,
+        min_quantity: Optional[int] = None,
+        max_quantity: Optional[int] = None,
+        category_id: Optional[UUID] = None
+    ) -> List[ProductResponse]:
+        async with async_session_maker() as session:
+            query = select(Product)
+            conditions = []
+
+            if name:
+                conditions.append(Product.name.ilike(f"%{name}%"))
+            if min_price is not None:
+                conditions.append(Product.price >= min_price)
+            if max_price is not None:
+                conditions.append(Product.price <= max_price)
+            if min_quantity is not None:
+                conditions.append(Product.quantity >= min_quantity)
+            if max_quantity is not None:
+                conditions.append(Product.quantity <= max_quantity)
+            if category_id is not None:
+                conditions.append(Product.category_id == category_id)
+
+            if conditions:
+                query = query.where(and_(*conditions))
+
+            result = await session.execute(query)
+            products = result.scalars().all()
+            return [ProductResponse.from_orm(product) for product in products]
