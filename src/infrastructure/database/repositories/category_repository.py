@@ -1,9 +1,10 @@
-from sqlalchemy import select
+from sqlalchemy import select, update
 from sqlalchemy.exc import SQLAlchemyError
 from src.application.domain.category import CategoryCreate
+from src.config import settings
 from src.exceptions import CategoryAlreadyExistsException, CategoryNotFoundException
 from src.infrastructure.database.database import async_session_maker
-from src.infrastructure.database.models import Category
+from src.infrastructure.database.models import Category, Product
 
 
 class CategoryRepository:
@@ -39,10 +40,21 @@ class CategoryRepository:
         async with async_session_maker() as session:
             result = await session.execute(select(Category).filter_by(id=category_id))
             category = result.scalars().first()
+
             if not category:
                 raise CategoryNotFoundException
+
+            none_category_result = await session.execute(select(Category).filter_by(name=settings.NONE_CATEGORY_NAME))
+            none_category = none_category_result.scalars().first()
+
+            if not none_category:
+                raise CategoryNotFoundException
+
+            await session.execute(update(Product).where(Product.category_id == category.id).values(category_id=none_category.id))
+
             await session.delete(category)
             await session.commit()
+
             return category
 
     @staticmethod
