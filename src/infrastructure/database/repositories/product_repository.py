@@ -1,7 +1,9 @@
+from uuid import UUID
+
 from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
 from src.application.domain.product import ProductCreate
-from src.exceptions import ProductAlreadyExistsException
+from src.exceptions import ProductAlreadyExistsException, ProductNotFoundException
 from src.infrastructure.database.database import async_session_maker
 from src.infrastructure.database.models import Product
 
@@ -29,4 +31,15 @@ class ProductRepository:
                 await session.rollback()
                 raise e
 
+            return product
+
+    @staticmethod
+    async def delete_product(product_id: UUID):
+        async with async_session_maker() as session:
+            result = await session.execute(select(Product).filter_by(id=product_id))
+            product = result.scalars().first()
+            if not product:
+                raise ProductNotFoundException
+            await session.delete(product)
+            await session.commit()
             return product
