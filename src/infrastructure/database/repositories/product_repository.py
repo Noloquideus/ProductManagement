@@ -1,10 +1,9 @@
 from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
 from src.application.domain.product import ProductCreate
-from src.config import settings
-from src.exceptions import ProductAlreadyExistsException, CategoryNotFoundException
+from src.exceptions import ProductAlreadyExistsException
 from src.infrastructure.database.database import async_session_maker
-from src.infrastructure.database.models import Product, Category
+from src.infrastructure.database.models import Product
 
 
 class ProductRepository:
