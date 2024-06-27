@@ -1,6 +1,5 @@
 from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
-
 from src.application.domain.category import CategoryCreate
 from src.exceptions import CategoryAlreadyExistsException, CategoryNotFoundException
 from src.infrastructure.database.database import async_session_maker
