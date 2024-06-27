@@ -1,6 +1,7 @@
+from typing import Optional, List
 from uuid import UUID
-from fastapi import APIRouter, status
-from src.application.domain.product import ProductCreate, ProductUpdate
+from fastapi import APIRouter, status, Query
+from src.application.domain.product import ProductCreate, ProductUpdate, ProductResponse
 from src.application.services.product_service import ProductService
 
 product_router = APIRouter(
@@ -25,8 +26,26 @@ async def create_product(product_data: ProductCreate):
     description='Get a product by ID',
     summary='Get a product by ID',
     response_description='The requested product')
-async def get_product():
-    pass
+async def get_product(product_id: UUID):
+    product = await ProductService.get_product_by_id(product_id)
+    return product
+
+
+@product_router.get(
+    path='/',
+    status_code=status.HTTP_200_OK,
+    description='Get products by filters',
+    summary='Get products by filters',
+    response_description='The requested products')
+async def get_products(
+    name: Optional[str] = Query(None, description="Filter by product name"),
+    min_price: Optional[float] = Query(None, description="Filter by minimum price"),
+    max_price: Optional[float] = Query(None, description="Filter by maximum price"),
+    min_quantity: Optional[int] = Query(None, description="Filter by minimum quantity"),
+    max_quantity: Optional[int] = Query(None, description="Filter by maximum quantity"),
+    category_id: Optional[UUID] = Query(None, description="Filter by category ID")
+) -> List[ProductResponse]:
+    return await ProductService.get_products(name, min_price, max_price, min_quantity, max_quantity, category_id)
 
 
 @product_router.put(path='/{product_id}')
@@ -37,8 +56,3 @@ async def update_product(product_data: ProductUpdate):
 @product_router.delete(path='/{product_id}')
 async def delete_product(product_id: str):
     return await ProductService.delete_product(product_id=UUID(product_id))
-
-
-@product_router.get('/filter')
-async def filter_products():
-    pass
