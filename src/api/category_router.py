@@ -1,12 +1,8 @@
 from uuid import UUID
-
 from fastapi import APIRouter, status
-from sqlalchemy import select
-
 from src.application.domain.category import CategoryCreate
 from src.application.services.category_service import CategoryService
-from src.infrastructure.database.database import async_session_maker
-from src.infrastructure.database.models import Category
+
 
 category_router = APIRouter(
     prefix="/categories",
