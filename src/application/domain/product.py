@@ -56,3 +56,16 @@ class ProductUpdate(BaseModel):
     category_id: Optional[UUID] = Field(
         title="Product category id",
         description="Change category")
+
+
+class ProductResponse(BaseModel):
+    id: UUID
+    name: str
+    description: str
+    price: float
+    quantity: int
+    category_id: UUID
+
+    class Config:
+        orm_mode = True
+
