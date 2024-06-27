@@ -1,7 +1,6 @@
 from uuid import UUID
-
 from fastapi import APIRouter, status
-from src.application.domain.product import ProductCreate
+from src.application.domain.product import ProductCreate, ProductUpdate
 from src.application.services.product_service import ProductService
 
 product_router = APIRouter(
@@ -30,14 +29,9 @@ async def get_product():
     pass
 
 
-@product_router.put('/change_category/{product_id}')
-async def change_category():
-    pass
-
-
 @product_router.put(path='/{product_id}')
-async def update_product():
-    pass
+async def update_product(product_data: ProductUpdate):
+    return await ProductService.update_product(product_data)
 
 
 @product_router.delete(path='/{product_id}')
