@@ -29,3 +29,27 @@ class ProductCreate(BaseModel):
     category_id: Optional[UUID] = Field(
         title="Product category id",
         description="Category of the product")
+
+
+class ProductUpdate(BaseModel):
+    name: Optional[str] = Field(
+        title="Product name",
+        description="Name of the product",
+        min_length=1,
+        max_length=100)
+    description: Optional[str] = Field(
+        title="Product description",
+        description="Description of the product",
+        min_length=1,
+        max_length=100)
+    price: Optional[float] = Field(
+        title="Product price",
+        description="Price of the product",
+        ge=0)
+    quantity: Optional[int] = Field(
+        title="Product quantity",
+        description="Quantity of the product",
+        ge=0)
+    category_id: Optional[UUID] = Field(
+        title="Product category id",
+        description="Category of the product")
