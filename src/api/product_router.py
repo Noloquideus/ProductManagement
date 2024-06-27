@@ -2,6 +2,7 @@ from fastapi import APIRouter, status
 from src.application.domain.product import ProductCreate
 from src.application.services.product_service import ProductService
 
+
 product_router = APIRouter(
     prefix="/products",
     tags=["products"],
@@ -38,7 +39,6 @@ async def delete_product():
     pass
 
 
-# Здесь можно будет добавить эндпоинты с фильтрацией
 @product_router.get('/filter')
 async def filter_products():
     pass
