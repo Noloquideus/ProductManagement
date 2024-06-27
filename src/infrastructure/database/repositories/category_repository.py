@@ -1,5 +1,8 @@
 from sqlalchemy import select
+from sqlalchemy.exc import SQLAlchemyError
+
 from src.application.domain.category import CategoryCreate
+from src.exceptions import CategoryAlreadyExistsException
 from src.infrastructure.database.database import async_session_maker
 from src.infrastructure.database.models import Category
 
@@ -9,9 +12,16 @@ class CategoryRepository:
     @staticmethod
     async def create_category(category_data: CategoryCreate) -> Category:
         async with async_session_maker() as session:
+            existing_category = await session.execute(select(Category).filter_by(name=category_data.name))
+            if existing_category.scalars().first():
+                raise CategoryAlreadyExistsException(name=category_data.name)
             category = Category(name=category_data.name, description=category_data.description)
             session.add(category)
-            await session.commit()
+            try:
+                await session.commit()
+            except SQLAlchemyError as e:
+                await session.rollback()
+                raise e
             return category
 
     @staticmethod
