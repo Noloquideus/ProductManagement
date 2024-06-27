@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from sqlalchemy import select, update
 from sqlalchemy.exc import SQLAlchemyError
 from src.application.domain.category import CategoryCreate
@@ -32,8 +34,11 @@ class CategoryRepository:
             return result.scalars().all()
 
     @staticmethod
-    async def get_products_by_category(category_id: str):
-        pass
+    async def get_products_by_category(category_id: UUID):
+        async with async_session_maker() as session:
+            query = select(Product).filter_by(category_id=category_id)
+            result = await session.execute(query)
+            return result.scalars().all()
 
     @staticmethod
     async def delete_category(category_id: str):
