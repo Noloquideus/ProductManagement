@@ -2,7 +2,6 @@ import uuid
 from sqlalchemy import Column, UUID, String, DateTime, func, Float, ForeignKey
 from sqlalchemy.dialects.postgresql import ARRAY, INTEGER
 from sqlalchemy.orm import relationship
-
 from src.infrastructure.database.database import Base
 
 
