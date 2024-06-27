@@ -1,7 +1,5 @@
 from uuid import UUID
-
-from src.application.domain.product import ProductCreate
-from src.config import settings
+from src.application.domain.product import ProductCreate, ProductUpdate
 from src.infrastructure.database.repositories.product_repository import ProductRepository
 
 
@@ -14,3 +12,7 @@ class ProductService:
     @staticmethod
     async def delete_product(product_id: UUID):
         return await ProductRepository.delete_product(product_id)
+
+    @staticmethod
+    async def update_product(product_data: ProductUpdate):
+        return await ProductRepository.update_product(product_data)
