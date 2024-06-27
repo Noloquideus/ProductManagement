@@ -1,9 +1,10 @@
 from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
 from src.application.domain.product import ProductCreate
-from src.exceptions import ProductAlreadyExistsException
+from src.config import settings
+from src.exceptions import ProductAlreadyExistsException, CategoryNotFoundException
 from src.infrastructure.database.database import async_session_maker
-from src.infrastructure.database.models import Product
+from src.infrastructure.database.models import Product, Category
 
 
 class ProductRepository:
@@ -15,11 +16,18 @@ class ProductRepository:
             if existing_product.scalars().first():
                 raise ProductAlreadyExistsException
 
-            product = Product(name=product_data.name, description=product_data.description, price=product_data.price)
+            product = Product(
+                category_id=product_data.category_id,
+                name=product_data.name,
+                description=product_data.description,
+                price=product_data.price,
+                quantity=product_data.quantity)
             session.add(product)
+
             try:
                 await session.commit()
             except SQLAlchemyError as e:
                 await session.rollback()
                 raise e
+
             return product
