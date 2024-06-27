@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from fastapi import APIRouter, status
 from sqlalchemy import select
 
@@ -35,8 +37,8 @@ async def get_all_categories():
     status_code=210,
     description='Get products of category',
     summary='Get products of category by id')
-async def get_products_by_category():
-    return await CategoryService.get_products_by_category()
+async def get_products_by_category(category_id: UUID):
+    return await CategoryService.get_products_by_category(category_id=category_id)
 
 
 @category_router.delete(
