@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from src.api.auth.auth_router import auth_router
 from src.api.category_router import category_router
 from src.api.product_router import product_router
-from src.infrastructure.database.init.none_category import create_non_category
+from src.infrastructure.database.init.none_category import create_none_category
 from src.infrastructure.database.init.redis import init_redis
 from src.infrastructure.database.init.superadmin import create_superadmin
 
