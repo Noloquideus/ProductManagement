@@ -1,8 +1,8 @@
 """categories and products models
 
-Revision ID: 6819d6998242
+Revision ID: 1cdf0dedcf36
 Revises: b08746c7fcc9
-Create Date: 2024-06-27 04:01:51.323772
+Create Date: 2024-06-27 15:22:31.824448
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '6819d6998242'
+revision: str = '1cdf0dedcf36'
 down_revision: Union[str, None] = 'b08746c7fcc9'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -39,7 +39,7 @@ def upgrade() -> None:
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_products_id'), 'products', ['id'], unique=True)
-    op.create_index(op.f('ix_products_name'), 'products', ['name'], unique=False)
+    op.create_index(op.f('ix_products_name'), 'products', ['name'], unique=True)
     # ### end Alembic commands ###
 
 
