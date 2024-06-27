@@ -1,5 +1,4 @@
 from typing import List, Union
-
 import email_validator
 import phonenumbers
 from pydantic import BaseModel, StrictStr, EmailStr, Field, field_validator
