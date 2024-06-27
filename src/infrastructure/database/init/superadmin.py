@@ -9,6 +9,8 @@ async def create_superadmin():
         superadmin = User(
             email=settings.SUPERADMIN_EMAIL,
             phone_number=settings.SUPERADMIN_PHONE,
+            first_name=settings.SUPERADMIN_FIRSTNAME,
+            last_name=settings.SUPERADMIN_LASTNAME,
             password_hash=HashService.hash(settings.SUPERADMIN_PASSWORD),
             access_level=settings.SUPERADMIN_ACCESS_LEVEL)
         session.add(superadmin)

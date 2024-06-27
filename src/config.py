@@ -6,8 +6,7 @@ load_dotenv(find_dotenv(".env"))
 
 
 class Settings(BaseSettings):
-
-    MODE = Literal['DEV', 'TEST']
+    MODE: Literal['DEV', 'TEST']
 
     TEST_DB_HOST: str
     TEST_DB_PORT: int
@@ -30,6 +29,8 @@ class Settings(BaseSettings):
 
     SUPERADMIN_EMAIL: str
     SUPERADMIN_PHONE: str
+    SUPERADMIN_FIRSTNAME: str
+    SUPERADMIN_LASTNAME: str
     SUPERADMIN_PASSWORD: str
     SUPERADMIN_ACCESS_LEVEL: int
 
