@@ -1,4 +1,6 @@
 from typing import Optional
+from uuid import UUID
+
 from src.application.domain.category import CategoryCreate
 from src.infrastructure.database.models import Category
 from src.infrastructure.database.repositories.category_repository import CategoryRepository
@@ -15,7 +17,7 @@ class CategoryService:
         return await CategoryRepository.get_all_categories()
 
     @staticmethod
-    async def get_products_by_category(category_id: str):
+    async def get_products_by_category(category_id: UUID):
         return await CategoryRepository.get_products_by_category(category_id=category_id)
 
     @staticmethod
