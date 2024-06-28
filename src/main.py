@@ -6,6 +6,7 @@ from src.api.product_router import product_router
 from src.infrastructure.database.init.none_category import create_none_category
 from src.infrastructure.database.init.redis import init_redis
 from src.infrastructure.database.init.superadmin import create_superadmin
+from src.logger import logger
 
 
 @asynccontextmanager
@@ -13,9 +14,9 @@ async def lifespan(_):
     await init_redis()
     await create_superadmin()
     await create_none_category()
-    print("startup")
+    logger.info("Application STARTED")
     yield
-    print("shutdown")
+    logger.info("Application STOPPED")
 
 
 app = FastAPI(title='Auth Service', description='Auth Service API', version='1.0.0', redoc_url=None, lifespan=lifespan)
