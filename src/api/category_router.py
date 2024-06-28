@@ -1,6 +1,7 @@
 from uuid import UUID
 from fastapi import APIRouter, status
 from fastapi_cache.decorator import cache
+from src.api.auth.decorator import require_min_access_level
 from src.application.domain.category import CategoryCreate
 from src.application.services.category_service import CategoryService
 
@@ -16,6 +17,7 @@ category_router = APIRouter(
     status_code=status.HTTP_201_CREATED,
     description='Create a new category',
     summary='Create a new category')
+@require_min_access_level(5)
 async def create_category(category_data: CategoryCreate):
     return await CategoryService.create_category(category_data=category_data)
 
@@ -44,6 +46,7 @@ async def get_products_by_category(category_id: UUID):
     status_code=status.HTTP_204_NO_CONTENT,
     description='Delete category by id',
     summary='Delete category by id')
+@require_min_access_level(5)
 async def delete_category(category_id: str):
     return await CategoryService.delete_category(category_id=category_id)
 
@@ -53,5 +56,6 @@ async def delete_category(category_id: str):
     status_code=status.HTTP_200_OK,
     description='Update category by id',
     summary='Update category by id')
+@require_min_access_level(5)
 async def update_category(category_id: str, name: str, description: str):
     return await CategoryService.update_category(category_id=category_id, name=name, description=description)

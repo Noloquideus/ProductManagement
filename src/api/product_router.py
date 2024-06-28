@@ -2,7 +2,7 @@ from typing import Optional, List
 from uuid import UUID
 from fastapi import APIRouter, status, Query
 from fastapi_cache.decorator import cache
-
+from src.api.auth.decorator import require_min_access_level
 from src.application.domain.product import ProductCreate, ProductUpdate, ProductResponse
 from src.application.services.product_service import ProductService
 
@@ -18,6 +18,7 @@ product_router = APIRouter(
     description='Create a new product',
     summary='Create a new product',
     response_description='The newly created product')
+@require_min_access_level(5)
 async def create_product(product_data: ProductCreate):
     return await ProductService.create_product(product_data)
 
@@ -52,10 +53,12 @@ async def get_products(
 
 
 @product_router.put(path='/{product_id}')
+@require_min_access_level(5)
 async def update_product(product_data: ProductUpdate):
     return await ProductService.update_product(product_data)
 
 
 @product_router.delete(path='/{product_id}')
+@require_min_access_level(5)
 async def delete_product(product_id: str):
     return await ProductService.delete_product(product_id=UUID(product_id))
