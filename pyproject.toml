@@ -18,6 +18,7 @@ fastapi-cache2-fork = "^0.3.2"
 fastapi-cache2 = "^0.2.1"
 redis = "^5.0.7"
 python-json-logger = "^2.0.7"
+sqladmin = "^0.17.0"
 
 
 [tool.poetry.group.dev.dependencies]
