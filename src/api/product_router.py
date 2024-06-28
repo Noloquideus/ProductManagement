@@ -1,6 +1,6 @@
 from typing import Optional, List
 from uuid import UUID
-from fastapi import APIRouter, status, Query
+from fastapi import APIRouter, status, Query, Cookie
 from fastapi_cache.decorator import cache
 from src.api.auth.decorator import require_min_access_level
 from src.application.domain.product import ProductCreate, ProductUpdate, ProductResponse
@@ -19,7 +19,7 @@ product_router = APIRouter(
     summary='Create a new product',
     response_description='The newly created product')
 @require_min_access_level(5)
-async def create_product(product_data: ProductCreate):
+async def create_product(product_data: ProductCreate, access_token: str = Cookie('access_token')):
     return await ProductService.create_product(product_data)
 
 
@@ -29,6 +29,7 @@ async def create_product(product_data: ProductCreate):
     description='Get a product by ID',
     summary='Get a product by ID',
     response_description='The requested product')
+@cache(expire=180)
 async def get_product(product_id: UUID):
     product = await ProductService.get_product_by_id(product_id)
     return product
@@ -54,11 +55,11 @@ async def get_products(
 
 @product_router.put(path='/{product_id}')
 @require_min_access_level(5)
-async def update_product(product_data: ProductUpdate):
+async def update_product(product_data: ProductUpdate, access_token: str = Cookie('access_token')):
     return await ProductService.update_product(product_data)
 
 
 @product_router.delete(path='/{product_id}')
 @require_min_access_level(5)
-async def delete_product(product_id: str):
+async def delete_product(product_id: str, access_token: str = Cookie('access_token')):
     return await ProductService.delete_product(product_id=UUID(product_id))
